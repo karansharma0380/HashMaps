@@ -1,0 +1,94 @@
+Que: Change and return strategy of tree traversal. But here we are representing Generic tree and not the binary tree.
+
+Given a dictionary that contains mapping of employee and his manager as a number of (employee, manager) pairs like below. 
+
+{ "A", "C" },
+{ "B", "C" },
+{ "C", "F" },			In this example C is manager of A,
+{ "D", "E" },			C is also manager of B, F is manager 
+{ "E", "F" },			of C and so on.
+{ "F", "F" }  
+
+ 			F*3  [will return size+1 in post order]
+		      /   \
+		     C2    E1  [they will return size+1 in post order.]
+		   /   \  /
+		  A0   0B D0  [Their size if 0 but they will return 1 in post order.]
+
+Write a function to get no of employees under each manager in the hierarchy not just their direct reports. It may be assumed that an
+employee directly reports to only one manager. In the above dictionary the root node/ceo is listed as reporting to himself. 
+
+o/p: 	A - 0  
+	B - 0
+	C - 2
+	D - 0
+	E - 1
+	F - 5 
+Soln: 
+
+ 1. Create a reverse map with Manager->DirectReportingEmployee 
+    combination. Off-course employee will be multiple so Value 
+    in Map is List of Strings.
+        "C" --> "A", "B",
+        "E" --> "D" 
+        "F" --> "C", "E", "F"
+
+2. Now use the given employee-manager map to iterate  and at 
+   the same time use newly reverse map to find the count of 
+   employees under manager.
+
+3. Let the map created in step 2 be 'mngrEmpMap' 
+   Do following for every employee 'emp'.
+     a) If 'emp' is not present in 'mngrEmpMap' 
+          Count under 'emp' is 0 [Nobody reports to 'emp']
+     b) If 'emp' is present in 'mngrEmpMap' 
+          Use the list of direct reports from map 'mngrEmpMap'
+          and recursively calculate number of total employees
+          under 'emp'. 
+
+
+private static int findCount(ArrayList<String,String> map){
+	HashMap<String, HashSet<String>> tree= new HashMap<>();   our tree
+	String ceo="";
+
+	for(String emp:map.keySet()){
+		String man = map.get(emp);
+		
+		if(man.equals(emp)){
+			ceo=man;
+		}
+		else{
+			if(tree.containsKey(man)){
+				HashSet<String> emps = tree.get(man);
+				emps.add(emp);
+			}
+			else{
+				HashSet<String> emps = new HashSet<>();
+				emps.add(emp);
+				tree.put(man,emps);
+			}
+		}
+	}
+
+	HashSet<String, Integer> result = new HashMap<>();
+	getSize(tree,ceo,result);
+	for(String emp:result.keySet()){
+		System.out.println(emp+" "+ result.get(emp));
+	}
+}
+public static void getSize(HashMap<String, HashSet<String>> tree, String man, HashMap<String, Integer> result){
+	if(tree.containsKey(man)==false){
+		result.put(man,0);
+		return 1;
+	}
+
+	int size=0;
+	for(String emps:tree.get(man)){
+		int csize = getSize(tree,emp,result);
+		size+=csize;
+	}
+
+	result.put(man,size);
+	return size+1;
+}
+

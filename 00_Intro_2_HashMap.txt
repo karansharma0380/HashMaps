@@ -1,0 +1,31 @@
+HashMap is un-ordered. 
+
+public static void main(String[] args) {
+     
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        map.put("India",140);
+        map.put("USA", 20);
+        map.put("China",200);
+        map.put("UK",10);
+        map.put("Pak",30);
+        
+        System.out.println(map);  -> {USA=20, China=200, UK=10, Pak=30, India=140}
+
+	map.put("Nigeria",55);
+        map.put("USA",25);
+        
+        System.out.println(map); -> {USA=25, China=200, UK=10, Pak=30, Nigeria=55, India=140}
+
+	System.out.println(map.get("India")); -> 140
+	System.out.println(map.get("Utopia")); -> null
+
+	System.out.println(map.containsKey("India"));  -> true
+        System.out.println(map.containsKey("Utopia")); -> false
+
+	Set<String> keys = map.keySet(); //Gives you set of keys so that you can loop over it. 
+        for(String key:keys){
+            System.out.println(key);
+        }
+        
+    }

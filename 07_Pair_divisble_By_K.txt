@@ -1,0 +1,136 @@
+Check if an array can be divided into pairs whose sum is divisible by k
+[Array and Divisibility then most likely hashmap]
+
+Ques: Given an array of integers and a number k, write a function that returns true if the given array can be divided into pairs such 
+that the sum of every pair is divisible by k.
+
+Input: arr[] = {92, 75, 65, 48, 45, 35}, k = 10 
+Output: True 
+We can divide the array into (92, 48), (75, 65). 
+and (45, 35). The sum of all these pairs is a 
+multiple of 10.
+
+Soln: 
+A Simple Solution is to iterate through every element arr[i]. Find if there is another not yet visited element that has a remainder 
+like (k – arr[i]%k). If there is no such element, return false. If a pair is found, then mark both elements as visited. The time 
+complexity of this solution is O(n2 and it requires O(n) extra space.
+
+static boolean canPairs(int nums[], int n, int k)
+  {
+    // Array with odd length
+    // cannot be divided
+    if (n % 2 == 1)
+      return false;
+ 
+    // Initialize count = 0
+    int count = 0;
+ 
+    int vis[] = new int[n];
+    Arrays.fill(vis,-1);
+ 
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        if ((nums[i] + nums[j]) % k == 0 && vis[i] == -1 && vis[j] == -1) {
+ 
+          // if pair is divisible increment
+          // the count and mark elements
+          // as visited
+          count++;
+          vis[i] = 1;
+          vis[j] = 1;
+        }
+      }
+    }
+ 
+    if (count == n / 2)
+      return true;
+ 
+    return false;
+  }
+
+
+Using hashmap
+
+In whole of this process,
+Case 1: 
+		n/k                    m/k
+		 |			|
+		 |[Remainder]		|[Remainder]
+		 |			|
+		 x		      (k-x)  
+e.g. -> n=65, m=75 , k=10
+then 
+	65/10 - 5(x)    75/10- 5(k-x[10-5]) if this is true then this pair is divisible by k.
+case 2: 
+		n/k    			m/k
+		 |			 |
+		 |[Remainder]		 |[Remainder]
+		 |  			 |
+		 0                       0 
+
+Baseline idea is:
+	We will make a remainders HashMap
+	And freq of x and (k-x) should be same.
+	    freq of 0-> even [completely divisble]
+	    freq of k/2-> even [like k=0 and we have 5]     Why we need all of this to pair them up.
+
+e.g. [9,56,25,52,72,44,80,36,96,71], k=8
+
+	remainder freq map
+		1 -> 2
+		0 -> 4
+		4 -> 4
+		7 -> 2
+
+public static void solve(int[] arr, int k){
+	HashMap<Integer, Integer> fmap = new HashMap<>();
+	
+	for(int val:arr){
+		int rem = val%k;
+		
+		int of = fmap.getOrDefault(rem,0);
+		fmap.put(val,of+1;)
+	}
+
+	for(int val:arr){
+		int rem = val%k;
+
+		if(rem==0){
+			int fq = fmap.get(rem);
+			if(fq%2==1){
+				Sout("False");
+				return;
+			}
+		}
+		else if(2*rem==k){  rem==k/2
+			int fq = fmap.get(rem);
+			if(fq%2==1){
+				Sout("False");
+				return;
+			}
+		}
+		else{
+			int fq = map.get(rem);
+			int ofq= map.getOrDefault(rem-k,0); // if there no matching freq we will get null but by this we will get 0.
+			if(fq!=ofq){
+				Sout("False");
+				return;
+			}
+		}
+	}
+
+	Sout("True");
+}
+
+
+Now why 2*rem==2 and why not rem==k/2.
+
+if k=10 then       k/2 is 5 other half is also 5 for pairing 
+but k=11 then  
+		x      	k-x
+		
+		k/2	k/2
+	
+		5	 6 
+
+

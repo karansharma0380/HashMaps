@@ -1,0 +1,26 @@
+Ques: Suppose we have a string -> a b r a c a d a b r a, we want the character with highest freq 
+output = > c which is 6.
+
+Soln: 
+
+public static Character hf(String s){
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(map.containsKey(ch)){
+                map.put(ch,map.get(ch)+1);
+            }
+            else{
+                map.put(ch,1);
+            }
+        }
+        
+        char maxch = s.charAt(0);
+        for(Character ch:map.keySet()){
+            if(map.get(ch)>map.get(maxch)){
+                maxch = ch;
+            }
+        }
+        
+        return maxch;
+    }

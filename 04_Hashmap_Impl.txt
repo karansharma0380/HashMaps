@@ -1,0 +1,28 @@
+Hashmap
+
+	      O(1)      O(1)   	   O(1)          O(1)                 O(1)
+Element        put	get	containsKey	remove 	   keySet    size         
+  /         
+\/present    Update    Value      true          value       -        gives size
+ 
+X 	     Insert    null 	  false		null        -        gives size
+
+
+HashMap is an array of linkedLists and each slot which has a linkedlist called a bucket.
+
+If we want to put something to the array, we pass it to the hash function then based on the value we will only the check the 
+specific bucket for the value. 
+
+Suppose there are 'n' elements.	'N' buckets then lambda= n/N
+lambda  = loading factor(avg num of elemnt per bucket)
+
+lambda<=k(a threshold value)
+
+As the n inc, the lambda will also inc so after very put we will check if the lamda is less then k or not.
+if it exceeds the 'k', then we will apply the re-hash function. 
+re hashing is size of array is doubled and elements added again to it.
+
+put() - O(lambda)
+
+
+
