@@ -1,0 +1,56 @@
+Similar to the previous question
+
+We are provided with a string and we have to find that substring which has all the unique character of the string
+
+Soln:
+
+public static int solve(String str){
+        int len = str.length();
+        
+        HashSet<Character> set = new HashSet<>();
+        for(int i=0;i<str.length();i++){
+            char ch = str.charAt(i);
+            set.add(ch);
+        }
+        
+        int i=-1;
+        int j=-1;
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        while(true){
+            boolean flag1=false;
+            boolean flag2 = false;
+            //acquire till it is invalid (map.size()<set.size())
+            while(i<str.length()-1 && map.size()<set.size() ){
+                i++;
+                char ch = str.charAt(i);
+                map.put(ch,map.getOrDefault(ch,0)+1);
+                flag1=true;
+            }
+            
+            //collect and release
+            while(j<i && map.size()==set.size()){
+                int panslen = i-j;
+                if(panslen<len){
+                    len=panslen;
+                }
+                
+                j++;
+                //releasing the character
+                char ch = str.charAt(j);
+                if(map.get(ch)==1){
+                    map.remove(ch);
+                }
+                else{
+                    map.put(ch,map.get(ch)-1);
+                }
+                flag2=true;
+            }
+            
+            if(flag1==false && flag2==false){
+                break;
+            }
+        }
+        
+        return len;
+    }

@@ -1,0 +1,26 @@
+Same last question but you have to count the subarray
+
+public static int solve(int[] arr){
+	HashMap<Integer, Integer> map = new HashMap<>(); //map will sold sum->freq mapping
+	
+	int i=-1;
+	int sum=0;
+	int count= 0;
+	map.put(0,-1);
+
+	while(i<arr.length-1){
+		i++;
+		sum+=arr[i]
+
+		if(map.containsKey(sum)==false){
+			map.put(sum,1);
+		}
+		else{
+			count+=map.get(sum);
+			map.set(sum,map.get(sum)+1);
+							
+		}
+	}
+	
+	return count;
+}

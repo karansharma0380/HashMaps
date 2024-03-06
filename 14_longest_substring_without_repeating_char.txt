@@ -1,0 +1,73 @@
+Given a string s, find the length of the longest 
+substring
+ without repeating characters.
+
+Example 1:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+
+Example 2:
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Example 3:
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+Soln:
+
+motto - "acquire until you are invalid"
+	"release util you are valid"
+
+
+public static int solve(String str){
+	int ans= 0;
+
+	int i=-1;
+	int j=-1;
+	HashMap<Character, Integer> map = new HashMap<>();
+	while(true){
+		boolean f1=false;
+		boolean f2 = false;
+		//acquire
+		while(i<str.lenght()-1){
+			f1=true;
+			i++;
+			char ch = str.charAt(i);
+			map.put(ch,map.getOrDefault(ch,0)+1);
+
+			if(map.get(ch)==2){//invalid
+				break;
+			}
+			else{
+				int len = i-j;
+				if(len<ans){
+					ans=len;
+				}
+			}
+		}
+	
+		//release the character till it become valid
+		while(j<i){
+			f2=true;
+			j++;
+			char ch = str.charAt(i);
+			map.put(ch,map.get(ch)-1);
+
+			if(map.get(ch)==1){
+				break; //its valid now
+			}
+		}
+
+		if(f1==false && f2==false){
+			break;
+		}	
+
+	}
+	
+}
+
