@@ -1,0 +1,70 @@
+Given two listsAandB, andBis an anagram ofA.Bis an anagram ofAmeansBis made by randomizing the order of the elements inA.
+
+We want to find anindex mappingP, fromAtoB. A mappingP[i] = jmeans theith element inAappears inBat indexj.
+
+These listsAandBmay contain duplicates. If there are multiple answers, output any of them.
+
+A = [12, 28, 46, 32, 50]
+B = [50, 12, 32, 46, 28]
+
+o/p: [1, 4, 3, 2, 0]
+
+Soln: 
+
+Vry easy solution
+
+
+public static class Pair{
+        int idx;
+        ArrayList<Integer> lst=new ArrayList<>();
+    }
+    
+    public static void solve(int[] arr1, int[] arr2){
+        HashMap<Integer, Pair> map = new HashMap<>();
+        
+        for(int i=0;i<arr2.length;i++){
+            if(map.containsKey(arr2[i])){
+                Pair p=map.get(arr2[i]);
+                p.lst.add(i);
+            }
+            else{
+                Pair p =new Pair();
+                p.lst.add(i);
+                map.put(arr2[i],p);
+            }
+        }
+        
+        for(int i=0;i<arr1.length;i++){
+            Pair p = map.get(arr1[i]);
+            System.out.print(p.lst.get(p.idx)+" ");
+            p.idx++;
+        }
+    }
+
+
+int[] arr1 = {12, 28, 46, 32, 50};
+int[] arr2 = {50, 12, 32, 46, 28};
+solve(arr1,arr2);
+O/p: 1 4 3 2 0
+
+
+Fastest
+
+class Solution {
+    public int[] anagramMappings(int[] A, int[] B) {
+        int[] ret = new int[A.length];
+        for (int i = 0 ; i < ret.length ; i++) {
+            ret[i] = indexOf(B, A[i]);
+        }
+        return ret;
+    }
+
+    private int indexOf(int[] target, int value) {
+        for (int i = 0 ; i < target.length; i++) {
+            if (target[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}

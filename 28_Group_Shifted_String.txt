@@ -1,0 +1,70 @@
+Ques: Given a string, we can "shift" each of its letter to its successive letter, for example: "abc" -> "bcd". We can keep "shifting" 
+which forms the sequence:
+"abc" -> "bcd" -> ... -> "xyz"
+Given a list of strings which contains only lowercase alphabets, group all strings that belong to the same shifting sequence.
+
+Input: ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"],
+Output:
+[
+  ["abc","bcd","xyz"],
+  ["az","ba"],
+  ["acef"],
+  ["a","z"]
+]
+
+Soln:
+
+
+public static String getKey(String st){  /// This is the important function. 
+        String key="";
+        
+        for(int i=1;i<st.length();i++){
+            char curr = st.charAt(i);
+            char prev = st.charAt(i-1);
+            
+            int diff = curr-prev;
+            
+            if(diff<0){
+                diff+=26;
+            }
+            
+            key+=diff +"#";
+            
+        }
+        
+        key+=".";
+        
+        return key;
+    }
+
+ public static ArrayList<ArrayList<String>> solve(String[] strs){
+        HashMap<String, ArrayList<String>> map=new HashMap<>();
+        
+        for(String str:strs){
+            String code= getKey(str);
+    
+            if(map.containsKey(code)){
+                ArrayList<String> lst= map.get(code);
+                lst.add(str);
+            }
+            else{
+                ArrayList<String> lst = new ArrayList<>();
+                lst.add(str);
+                map.put(code,lst);
+            }
+        }
+        
+        ArrayList<ArrayList<String>> res = new ArrayList<>();
+        for(ArrayList<String> val:map.values()){
+            res.add(val);
+        }
+        
+        return res;
+    }
+
+public static void main(String[] args) {
+        String[] strs = {"abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"};
+        
+       ArrayList<ArrayList<String>> ans= solve(strs);
+       System.out.println(ans);
+    }

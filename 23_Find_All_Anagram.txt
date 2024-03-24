@@ -1,0 +1,92 @@
+Ques: Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters
+ exactly once.
+
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+
+Input: s = "abab", p = "ab"
+Output: [0,1,2]
+Explanation:
+The substring with start index = 0 is "ab", which is an anagram of "ab".
+The substring with start index = 1 is "ba", which is an anagram of "ab".
+The substring with start index = 2 is "ab", which is an anagram of "ab".
+
+Soln:
+
+Note: Two strings are anagram if their hashmap is same i.e. character and freq of those character is same.
+This solution employs a sliding window technique to efficiently find all occurrences of anagrams of a given pattern string p within 
+a larger string s.
+
+1. Frequency Maps Initialization: Initially, two HashMaps are created: pmap to store the frequency of characters in the pattern string p,
+ and smap to store the frequency of characters in the initial substring of s of the same length as p.
+
+2. Populating pmap and smap: Both maps are populated by iterating through the characters of p and the initial substring of s. This step
+ ensures that the frequency of each character is accurately recorded.
+
+3. Sliding Window Approach: With the initial substring mapped in smap, the solution starts a sliding window of length p.length() along
+ the string s. The window moves one character at a time.
+
+4. Checking Anagrams: At each step of the sliding window, the solution compares pmap and smap. If they are equal, it indicates that the 
+current substring of s is an anagram of p, and the index of the starting character of this substring is added to the result list.
+
+5. Updating smap: As the window slides, the frequency map smap is updated accordingly. The character leaving the window (at index j) is 
+decremented, and the character entering the window (at index i) is incremented.
+
+6. Finalizing the Search: After the sliding window reaches the end of s, the final comparison between pmap and the last version of smap 
+is made. If they match, the index of the last starting character is added to the result list.
+
+7. Returning the Result: The list containing the starting indices of all substrings in s that are anagrams of p is returned as the final 
+result.
+
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        if(s.length()<p.length()){
+            return new ArrayList<>();
+        }
+        List<Integer> ans = new ArrayList<>();
+        
+        HashMap<Character, Integer> pmap = new HashMap<>();
+        for (int i = 0; i < p.length(); i++) {
+            char ch = p.charAt(i);
+            pmap.put(ch, pmap.getOrDefault(ch, 0) + 1);
+        }
+        
+        HashMap<Character, Integer> smap = new HashMap<>();
+        for (int i = 0; i < p.length(); i++) {
+            char ch = s.charAt(i);
+            smap.put(ch, smap.getOrDefault(ch, 0) + 1);
+        }
+        
+        int i = p.length();
+        int j = 0;
+        while (i < s.length()) {
+            if (pmap.equals(smap)) {
+                ans.add(j);
+            }
+            
+            char cha = s.charAt(i);
+            smap.put(cha, smap.getOrDefault(cha, 0) + 1);
+            
+            char chr = s.charAt(j);
+            smap.put(chr, smap.getOrDefault(chr, 0) - 1);
+            
+            if (smap.get(chr) == 0) {
+                smap.remove(chr);
+            }
+            
+            i++;
+            j++;
+        }
+        if (pmap.equals(smap)) {
+            ans.add(j);
+        }
+        
+        return ans;
+    }
+}

@@ -1,0 +1,62 @@
+Given two strings of lowercase alphabets and a value k, the task is to find if two strings are K-anagrams of each other or not.
+Two strings are called k-anagrams if following two conditions are true. 
+
+Both have same number of characters.
+Two strings can become anagram by changing at most k characters in a string.
+
+Input:  str1 = "anagram" , str2 = "grammar" , k = 3
+Output:  Yes
+Explanation: We can update maximum 3 values and 
+it can be done in changing only 'r' to 'n' 
+and 'm' to 'a' in str2.
+Input:  str1 = "geeks", str2 = "eggkf", k = 1
+Output:  No
+Explanation: We can update or modify only 1 
+value but there is a need of modifying 2 characters. 
+i.e. g and f in str 2.
+
+
+Soln:
+s1 = anagram, s2=grammer
+
+map for s1           -> edit this map based on the value son s2
+a = 3				a=2								a1
+n = 1				e=-1 //this is not present					n1  e-1
+g= 1				g = 0; //remove from the map					g1
+r = 1				r=-1;  remove 							r=0
+m = 1				m=-1  removed but writing this as a 				m=0
+
+If we see the difference then we can notice that 3 +ve and 1 -ve, 
+we will focus on the +ve values and if the sum of the +ve is more than k then false if less then true.
+
+public boolean solve(String st1, String st2){
+	if(st1.length() !=st2.length()){
+		return false;
+	}
+	
+	HashMap<Character, Integer> map = new HashMap<>();
+	for(int i=0;i<st1.length();i++){
+		char ch = st1.charAt(i);
+		map.put(ch,map.getOrDefault(ch,0)+1);
+	}
+
+	for(int i=0;i<st2.length();i++){
+		char ch = st2.charAt(i);
+		if(map.getOrDefault(ch,0)>0){
+			map.put(ch,mp.get(ch)-1);
+		}
+	}
+
+	int count =0;
+	for(char ch:keySet()){
+		count+=map.get(ch);
+	}
+
+	if(count>k){
+		return false;
+	}
+	else{
+		return true;
+	}
+
+}

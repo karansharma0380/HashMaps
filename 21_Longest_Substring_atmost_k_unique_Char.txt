@@ -1,0 +1,74 @@
+Ques: Find the longest substring with k unique characters in a given string
+
+Input: Str = “aabbcc”, k = 1
+Output: 2
+Explanation: Max substring can be any one from {“aa” , “bb” , “cc”}.
+
+Input: Str = “aabbcc”, k = 2
+Output: 4
+Explanation: Max substring can be any one from {“aabb” , “bbcc”}.
+
+Soln:
+
+Acquire and release easy question
+
+
+public static int solve(String st, int k){
+        int ans = 0;
+        
+        int i=-1;
+        int j=-1;
+        HashMap<Character,Integer> map= new HashMap<>();
+        
+        while(true){
+            boolean f1=false;
+            boolean f2=false;
+            
+            while(i<st.length()-1){
+                i++;
+                f1=true;
+                
+                char ch = st.charAt(i);
+                map.put(ch,map.getOrDefault(ch,0)+1);
+                
+                if(map.size()<=k){
+                    int len=i-j;
+                    if(len>ans){
+                        ans=len;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            
+            while(j<i){
+                j++;
+                f2=true;
+                
+                char ch = st.charAt(j);
+                map.put(ch,map.get(ch)-1);
+                
+                if(map.get(ch)==0){
+                    map.remove(ch);
+                }
+                
+                else if(map.size()<=k){
+                    int len=i-j;
+                    if(len>ans){
+                        ans=len;
+                    }
+                    break;
+                }
+                else{
+                    continue;
+                }
+            }
+            
+            if(f1==false && f2==false){
+                break;
+            }
+        }
+        return ans;
+        
+    }

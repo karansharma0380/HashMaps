@@ -1,0 +1,29 @@
+Ques: In an Array, you have to find if there are two pairs(A,B) and (C, D) present in the given array which satisfies the condition
+	A+B = C+D. [A,B,C,D are distinct elements]
+
+Soln:
+
+num of two pair in an array = nC2
+So suppose we have an array = [2,9,5,6,8,7]
+so num of two pair  = 6C2 
+
+This soln: O(n^2) no better soln exists.
+
+public boolean solve(int[] arr){
+	HashSet<Integer> map = new HashMap<>();
+
+	for(int i=0;i<arr.length;i++){
+		for(j=i+1;j<arr.length;j++){
+			int sum=arr[i]+arr[j];
+			if(set.contains(sum)){
+				return true;
+			}
+			else{
+				set.add(sum);
+			}
+		}
+	}
+
+	return false;
+}
+

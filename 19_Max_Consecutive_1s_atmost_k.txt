@@ -1,0 +1,62 @@
+Ques: Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most
+	 k 0's.
+
+Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+Output: 6
+Explanation: [1,1,1,0,0,1,1,1,1,1,1]
+Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+
+Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+Output: 10
+Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+
+Soln:
+
+
+function solve(arr, k):
+    ans = 0
+    count = 0
+    j = -1
+    
+    for i from 0 to length of arr - 1:
+        if arr[i] is 0:
+            increment count
+        
+        while count is greater than k:
+            increment j
+            if arr[j] is 0:
+                decrement count
+        
+        len = i - j
+        if len is greater than ans:
+            ans = len
+    
+    return ans
+
+
+public static int solve(int[] arr, int k){
+        int ans=0;
+        int count=0;
+        
+        int j=-1;
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==0){
+                count++;
+            }
+            
+            while(count>k){
+                j++;
+                if(arr[j]==0){
+                    count--;
+                }
+            }
+            
+            int len=i-j;
+            if(len>ans){
+                ans=len;
+            }
+        }
+        return ans;
+    }
+

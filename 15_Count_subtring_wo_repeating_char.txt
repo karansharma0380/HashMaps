@@ -1,0 +1,63 @@
+Ques: Given a string str consisting of lowercase alphabets, the task is to find the number of possible substrings (not necessarily 
+	distinct) that consists of distinct characters only.
+
+Input: Str = “gffg” 
+Output: 6 
+Explanation: 
+All possible substrings from the given string are, 
+( “g“, “gf“, “gff”, “gffg”, “f“, “ff”, “ffg”, “f“, “fg“, “g” ) 
+Among them, the highlighted ones consists of distinct characters only.
+
+
+Soln:
+
+class HelloWorld {
+    public static int solve(String st){
+        int ans = 0;
+        
+        int i=-1;
+        int j=-1;
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        while(true){
+            boolean f1=false;
+            boolean f2=false;
+            
+            //acquire
+            while(i<st.length()-1){
+                f1=true;
+                i++;
+                char ch = st.charAt(i);
+                map.put(ch,map.getOrDefault(ch,0)+1);
+                
+                if(map.get(ch)==2){ //duplicate frequency now we will drop char till we still at unique charac
+                    break;
+                }else{
+                    ans+=i-j; // it is valid(unique) so count the length
+                }
+            }
+            
+            //release the duplicate character
+            while(j<i){
+                f2=true;
+                j++;
+                char ch = st.charAt(j);
+                map.put(ch,map.get(ch)-1);
+                
+                if(map.get(ch)==1){ //after releasung the substring is valid now(unique character)
+                    ans+=i-j;// then count the length
+                    break;
+                }
+            }
+            
+            if(f1==false && f2==false){
+                break;
+            }
+        }
+        return ans;
+    }
+    public static void main(String[] args) {
+        int ans = solve("gffg");
+        System.out.println("Try programiz.pro");
+    }
+}
