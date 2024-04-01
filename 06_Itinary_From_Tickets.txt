@@ -16,30 +16,29 @@ Soln:
 
 One Solution is to build a graph and do Topological Sorting of the graph. The time complexity of this solution is O(n).
 
-We can also use hashing to avoid building a graph. The idea is to first find the starting point. A starting point would never be on
- ‘to’ side of a ticket. Once we find the starting point, we can simply traverse the given map to print itinerary in order. The following
- are steps. 
+We can also use hashing to avoid building a graph. There will be place which is not there in the destination of any itinery. 
+That will be our starting point and we have to find it. Once we find the starting point, we can simply traverse the given map to print
+itinerary in order. The following are steps. 
 
-1) Create a HashMap of given pair of tickets.  Let the created 
-   HashMap be 'dataset'. Every entry of 'dataset' is of the form 
-   "from->to" like "Chennai" -> "Banglore"
+1) Create a HashMap<String, Boolean> of given pair of tickets.  Let the created HashMap be 'psrc'. Every entry of 'psrc' is of the form
+	HashMap<String, Boolean> psrc = new HashMap<>();
+	e.g.  For every itinerary src->dest will get	
+					put dest->false
+					put src-> false (if exist else false) 
 
-2) Find the starting point of itinerary.
-     a) Create a reverse HashMap.  Let the reverse be 'reverseMap'
-        Entries of 'reverseMap' are of the form "to->form". 
-        Following is 'reverseMap' for above example.
-        "Banglore"-> "Chennai" 
-        "Delhi"   -> "Bombay" 
-        "Chennai" -> "Goa"
-        "Goa"     ->  "Delhi"
+2) From the above test case we have,
+ 	Bang -> false
+	Chennai -> False
+	Delhi->false
+	Bombay-> true*
+	Goa->false
+   Only true value we have is Bombay.
 
-b) Traverse 'dataset'.  For every key of dataset, check if it
-        is there in 'reverseMap'.  If a key is not present, then we 
-        found the starting point. In the above example, "Bombay" is
-        starting point.
+3) Having the Bomaby is the start point. 
 
-3) Start from above found starting point and traverse the 'dataset' 
+3) Start from above found starting point and traverse the 'given map' 
    to print itinerary.
+	Bombay-> Delhi -> Goa -> Chennai -> Bangalore.
 
 All of the above steps require O(n) time so overall time complexity is O(n).
 

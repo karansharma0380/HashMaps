@@ -1,5 +1,5 @@
 Check if an array can be divided into pairs whose sum is divisible by k
-[Array and Divisibility then most likely hashmap]
+!!!!!!!!!!!!!!!!!!!!!!![Array and Divisibility then most likely hashmap]!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Ques: Given an array of integers and a number k, write a function that returns true if the given array can be divided into pairs such 
 that the sum of every pair is divisible by k.
@@ -60,7 +60,7 @@ Case 1:
 		 x		      (k-x)  
 e.g. -> n=65, m=75 , k=10
 then 
-	65/10 - 5(x)    75/10- 5(k-x[10-5]) if this is true then this pair is divisible by k.
+	65/10 = 5(x)    75/10= 5((k-x)[10-5]) if this is true then this pair is divisible by k.
 case 2: 
 		n/k    			m/k
 		 |			 |
@@ -70,9 +70,9 @@ case 2:
 
 Baseline idea is:
 	We will make a remainders HashMap
-	And freq of x and (k-x) should be same.
-	    freq of 0-> even [completely divisble]
-	    freq of k/2-> even [like k=0 and we have 5]     Why we need all of this to pair them up.
+	And case 1---  freq of x and (k-x) should be same.
+	    case 2---  freq of 0-> even [completely divisble]
+	    case 3--- freq of k/2-> even [like k=0 and we have 5]     Why we need all of this to pair them up.
 
 e.g. [9,56,25,52,72,44,80,36,96,71], k=8
 
@@ -97,21 +97,21 @@ public static void solve(int[] arr, int k){
 
 		if(rem==0){
 			int fq = fmap.get(rem);
-			if(fq%2==1){
+			if(fq%2==1){ //Agar frequeency odd hai toh
 				Sout("False");
 				return;
 			}
 		}
-		else if(2*rem==k){  rem==k/2
+		else if(2*rem==k){  rem==k/2 
 			int fq = fmap.get(rem);
-			if(fq%2==1){
+			if(fq%2==1){ // agar freq odd hai to false
 				Sout("False");
 				return;
 			}
 		}
 		else{
 			int fq = map.get(rem);
-			int ofq= map.getOrDefault(rem-k,0); // if there no matching freq we will get null but by this we will get 0.
+			int ofq= map.getOrDefault(k-rem,0); // if there no matching freq we will get null but by this we will get 0.
 			if(fq!=ofq){
 				Sout("False");
 				return;
@@ -125,7 +125,7 @@ public static void solve(int[] arr, int k){
 
 Now why 2*rem==2 and why not rem==k/2.
 
-if k=10 then       k/2 is 5 other half is also 5 for pairing 
+if k=10 then       k/2 is 5 other half is also 5 for pairing then no prblem
 but k=11 then  
 		x      	k-x
 		

@@ -1,0 +1,29 @@
+Ques: 
+Soln:
+
+
+public int solve(int n, int m, int[] arr){
+	HashSet<Integer> completedTask = new HashSet<>();
+	for(int val:arr){
+		completedTask.add(val);
+	}
+
+	boolean flag = true;
+	ArrayList<Integer> one = new ArrayList<>();
+	ArrayList<Integer> two = new ArrayList<>();
+
+	boolean flag=true;
+	for(int i=1;i<=n;i++){
+		if(completedTask.contains(i)==false){
+			if(flag){
+				one.add(i);
+			}
+			else{
+				two.add(i);
+			}
+			flag=!flag;
+		}
+	}
+	
+	//print the values of one and two ArrayList<>()
+}

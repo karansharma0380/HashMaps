@@ -10,6 +10,24 @@ Explanation: There is no subarray with 0 sum
 
 Soln:
 
+Concept:
+	
+	2 8 -3 -5 2 -4 6 12 1 -3 4
+	------	------
+	sum=x	this array has zero sum
+	---------------
+		sum=x
+
+	2 8  -3 -5 2 -4 6 12 1 -3 4
+  sum 0 2 10  7 2
+  idx-1 0 1   2 |
+		|
+		|
+		We have seen this sum before, at index zero and we have seen this again at idx 3
+		so len =3-0=3
+using this technique we will get the answer for rest of the array. 
+and we want max length. We will compare the lengths and update the mLen variable. 
+
 public int solve(int[] arr){
 	HashMap<Integer, Integer> map = new HashMap<>();
 	int mlen=0;
@@ -18,7 +36,7 @@ public int solve(int[] arr){
 	int i=-1;
 	map.put(sum,i);
 	
-	while(i<arr.length-1){
+	while(i<arr.length-1){ //Till second last element coz we are reaching the last element as soon as we are entering the loop
 		i++;
 		sum+=arr[i];
 

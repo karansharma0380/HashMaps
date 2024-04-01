@@ -7,13 +7,7 @@ Given a dictionary that contains mapping of employee and his manager as a number
 { "C", "F" },			In this example C is manager of A,
 { "D", "E" },			C is also manager of B, F is manager 
 { "E", "F" },			of C and so on.
-{ "F", "F" }  
-
- 			F*3  [will return size+1 in post order]
-		      /   \
-		     C2    E1  [they will return size+1 in post order.]
-		   /   \  /
-		  A0   0B D0  [Their size if 0 but they will return 1 in post order.]
+{ "F", "F" }//Reporting to itself, to be noted  
 
 Write a function to get no of employees under each manager in the hierarchy not just their direct reports. It may be assumed that an
 employee directly reports to only one manager. In the above dictionary the root node/ceo is listed as reporting to himself. 
@@ -25,20 +19,24 @@ o/p: 	A - 0
 	E - 1
 	F - 5 
 Soln: 
+Concept: 
+		F*[3+2]5  [will return size+1 in post order]
+		      /   \
+		     C2    E1  [they will return size+1 in post order.]
+		   /   \  /
+		  A0   0B D0  [Their size if 0 but they will return 1 in post order.]
 
- 1. Create a reverse map with Manager->DirectReportingEmployee 
-    combination. Off-course employee will be multiple so Value 
+
+ 1. Create a reverse map with Manager->DirectReportingEmployee combination. Off-course employee will be multiple so Value 
     in Map is List of Strings.
         "C" --> "A", "B",
         "E" --> "D" 
         "F" --> "C", "E", "F"
 
-2. Now use the given employee-manager map to iterate  and at 
-   the same time use newly reverse map to find the count of 
+2. Now use the given employee-manager map to iterate  and at the same time use newly reverse map to find the count of 
    employees under manager.
 
-3. Let the map created in step 2 be 'mngrEmpMap' 
-   Do following for every employee 'emp'.
+3. Let the map created in step 2 be 'mngrEmpMap'. Do following for every employee 'emp'.
      a) If 'emp' is not present in 'mngrEmpMap' 
           Count under 'emp' is 0 [Nobody reports to 'emp']
      b) If 'emp' is present in 'mngrEmpMap' 
@@ -48,47 +46,49 @@ Soln:
 
 
 private static int findCount(ArrayList<String,String> map){
-	HashMap<String, HashSet<String>> tree= new HashMap<>();   our tree
+	HashMap<String, HashSet<String>> tree= new HashMap<>();   //our tree
 	String ceo="";
 
-	for(String emp:map.keySet()){
-		String man = map.get(emp);
+	for(String emp:map.keySet()){ //Iterating through the given dictionary
+		String man = map.get(emp); //Getting the manager infront of the employee
 		
-		if(man.equals(emp)){
-			ceo=man;
+		if(man.equals(emp)){  //If manager and employee are same *noted step
+			ceo=man;     // This employee is the CEO. 
 		}
-		else{
-			if(tree.containsKey(man)){
+		else{		//The employee is not equal to the manager(Not a CEO but a regular employee.)
+			if(tree.containsKey(man)){	//Get the list of employee under the manager of this emp(If exist) then add the emp
 				HashSet<String> emps = tree.get(man);
-				emps.add(emp);
+				emps.add(emp); //then add the emp to it.
 			}
-			else{
-				HashSet<String> emps = new HashSet<>();
-				emps.add(emp);
-				tree.put(man,emps);
+			else{ //If the manager of the emp, we are seeing for the first time,Then
+				HashSet<String> emps = new HashSet<>(); // Create a new Hashset(List for employee)
+				emps.add(emp); //add emp to that list
+				tree.put(man,emps); //Put that list in front of the manager. 
 			}
 		}
 	}
 
-	HashSet<String, Integer> result = new HashMap<>();
-	getSize(tree,ceo,result);
+	HashSet<String, Integer> result = new HashMap<>(); //Create a new Hashmap for result emp-numOfPeopleReporting to them. 
+	getSize(tree,ceo,result);//Run this function of gettting size of the tree to fill the map. Starting from the root(ceo)
+
 	for(String emp:result.keySet()){
 		System.out.println(emp+" "+ result.get(emp));
 	}
 }
+
 public static void getSize(HashMap<String, HashSet<String>> tree, String man, HashMap<String, Integer> result){
-	if(tree.containsKey(man)==false){
-		result.put(man,0);
-		return 1;
+	if(tree.containsKey(man)==false){ //If the manager is not present in the tree, this means that this is not a manager but an emp
+		result.put(man,0); // So put this in the result with freq=0
+		return 1; //But return 1 coz it will contribute to the count of other employee's
 	}
 
-	int size=0;
-	for(String emps:tree.get(man)){
-		int csize = getSize(tree,emp,result);
-		size+=csize;
+	int size=0;  //Initialize size to 0
+	for(String emp:tree.get(man)){ // Iterating through the children of the node(man)
+		int csize = getSize(tree,emp,result); //Getting their size
+		size+=csize; //Adding that to the size variable
 	}
 
-	result.put(man,size);
-	return size+1;
+	result.put(man,size); //in postorder add the size/numOfEmployee in front of the manager. 
+	return size+1; // and return yourSize+1. 
 }
 
