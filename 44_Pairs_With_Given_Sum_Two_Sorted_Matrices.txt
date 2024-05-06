@@ -1,0 +1,55 @@
+Ques: You are given two sorted matrices A and B.
+	A number X, 
+Find count of all the valid pairs from matrices whose sum is equal to X. Pair-> One elemnt from A and other from B.
+
+Soln:
+
+This is question is extended version of the question.
+
+q1. We have a sorted array, find a pair which has sum equal to X.
+e.g.  2 9 14 17 24 32 33 38
+      i                   j		
+what will do in this we will ue 2 pointer approach. 
+calculate the sum 
+	i) if sum<X, then i++
+	ii) if sum>X, then j--
+	iii) if sum==X then count++ and i++, j--
+
+Now, Let us see our question:
+
+i) TC:n^2 + n^2: n^2 and SC: n^2 (Using HashMap)
+
+Approach: Add the elements of 1st matrix into a HashMap/hashset(if no duplicates are there), then iterate over 2nd matrix and for every 
+	  element we will target-element. If target-element is present in the hashMap this means, we have found our match do count++.
+
+public int solve(int[] arr1, int[] arr2, int X){
+	HashSet<Integer, Integer> map= new HashSet<>();
+	for(int i=0;i<arr1.length;i++){
+		for(int j=0;j<arr1[0].length;j++){
+			map.put(arr1[i][j],getOrDefault(arr1[i][j],0)+1);
+		}
+	}
+	int count=0;
+
+	for(int i=0;i<arr2.length;i++){
+		for(int j=0;j<arr2[0].length;j++){
+			int ele = X-arr;    //thinking X can be smaller than the element of matrice 2
+			if(map.contains(ele)){
+				count+=map.get(ele);
+			}
+		}
+	}
+	
+	return count;
+}
+
+ii) TC: n^2 SC:O(1) 
+
+Approach: Same as the examples question we discussed, TWo pointer approach. 
+
+public int solve(int[] arr1, int[] arr2, int X){
+
+}
+ 
+	
+ 

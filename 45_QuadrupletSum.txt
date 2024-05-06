@@ -1,0 +1,72 @@
+Ques:  You are provided with an array and an integer X.
+       You have to find all unique quadruplets(a,b,c,d) which satisfies this condition:
+	a+b+c+d = X
+	Array can have +ve, -ve, zero in it
+
+Soln:
+
+Suppose we have an array arr[]= [4,2,8,7,2,3,10,2,4,3,2,10,10,4,5,5,7,8,7,5,2,4,4]
+
+First we will find     a+b = t1
+		then   a+b+c=t2
+		then   a+b+c+d=t3
+
+So to solve this we should have knowledge of PairSum problem i.e. two numbers from the arrya with sum equal to target. 
+
+1) Using loop O(n^2): we will run a loop where for every a, we will run another loop to find t-a=b. (Works in Un-sorted array)
+
+2) Using hashmap: We will run a loop to store eelements inside a hashmap. Then run over the array to see if t-a=b i.e. b exist in the 
+			hashmap or not. TC: O(n) and SC:O(n) [Works in un-sorted array].
+
+3) Two pointer: Sort the array. arr[] = [2,2,2,2,2,3,3,4,4,4,4,4,5,5,5,7,7,7,8,8,10,10,10]
+					 i                                              j
+	sum = arr[i]+arr[j]
+	if(sum<target){  //means our sum is less so we need to increase the value.
+		// 
+		i++;
+	}
+	else if(sum>target){ //means our sum is greater than the target then we have to move to the smaller value.
+		j--;
+	}
+	else{ // means sum==target. So,
+		i++;
+		j--;
+
+		now after changing the status of the pointers.
+		we will check if the array values are still same as the prev position then we will move that pointer where the val is same.
+		And we will keep doing this. 
+		coz we dont want the same pair again. 
+	}
+
+public ArrayList<ArrayList<Integer>> solve(int[] arr){ // This is twoSum  soln
+	ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+	int si= 0;
+	int ei=arr.length-1;
+
+	while(si<ei){
+		int sum = arr[si] + arr[ei];
+		
+		if(sum>target){
+			ei--;
+		}
+		else if(sum<target){
+			si++;
+		}
+		else{
+			res.add(Arrays.asList(arr[si],nums[ei]));
+			si++;
+			ei--;
+		
+			while(si<ei && arr[si]==arr[si-1]) si++;
+			while(si<ei && arr[ei]==arr[ei+1]) ei++;
+
+		}
+	}
+}
+
+3Sum an extension of 2Sum
+
+
+
+
+
