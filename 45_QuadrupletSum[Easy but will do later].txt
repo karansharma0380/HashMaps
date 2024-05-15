@@ -11,17 +11,18 @@ First we will find     a+b = t1
 		then   a+b+c=t2
 		then   a+b+c+d=t3
 
-So to solve this we should have knowledge of PairSum problem i.e. two numbers from the array with sum equal to target. 
+So to solve this we should have knowledge of PairSum problem i.e. two numbers from the arrya with sum equal to target. 
 
-1) Using loop O(n^2): we will run a loop where for every a and put it in HashMap, we will run another loop to find t-a=b. (Works in Un-sorted array)
+1) Using loop O(n^2): we will run a loop where for every a, we will run another loop to find t-a=b. (Works in Un-sorted array)
 
-2) Using HashMap: We will run a loop to store elements inside a HashMap. Then run over the array to see if t-a=b i.e. b exist in the 
-			HashMap or not. TC: O(n) and SC:O(n) [Works in un-sorted array].
+2) Using hashmap: We will run a loop to store eelements inside a hashmap. Then run over the array to see if t-a=b i.e. b exist in the 
+			hashmap or not. TC: O(n) and SC:O(n) [Works in un-sorted array].
 
 3) Two pointer: Sort the array. arr[] = [2,2,2,2,2,3,3,4,4,4,4,4,5,5,5,7,7,7,8,8,10,10,10]
 					 i                                              j
 	sum = arr[i]+arr[j]
-	if(sum<target){  //means our sum is less than the target so we need to increase the i++(to inc value).
+	if(sum<target){  //means our sum is less so we need to increase the value.
+		// 
 		i++;
 	}
 	else if(sum>target){ //means our sum is greater than the target then we have to move to the smaller value.
@@ -33,13 +34,14 @@ So to solve this we should have knowledge of PairSum problem i.e. two numbers fr
 
 		now after changing the status of the pointers.
 		we will check if the array values are still same as the prev position then we will move that pointer where the val is same.
-		And we will keep doing this. coz we don't want the same pair again. 
+		And we will keep doing this. 
+		coz we dont want the same pair again. 
 	}
 
-public ArrayList<ArrayList<Integer>> solve(int[] arr, int target, int si, int ei){ // This is twoSum  soln
+public ArrayList<ArrayList<Integer>> solve(int[] arr){ // This is twoSum  soln
 	ArrayList<ArrayList<Integer>> res = new ArrayList<>();
-	int si= 0; //Optional (given in the function definition)
-	int ei=arr.length-1; //Optional
+	int si= 0;
+	int ei=arr.length-1;
 
 	while(si<ei){
 		int sum = arr[si] + arr[ei];
@@ -56,14 +58,13 @@ public ArrayList<ArrayList<Integer>> solve(int[] arr, int target, int si, int ei
 			ei--;
 		
 			while(si<ei && arr[si]==arr[si-1]) si++;
-			while(si<ei && arr[ei]==arr[ei+1]) ei--;
+			while(si<ei && arr[ei]==arr[ei+1]) ei++;
+
 		}
 	}
 }
 
 3Sum an extension of 2Sum
-
-
 
 
 
