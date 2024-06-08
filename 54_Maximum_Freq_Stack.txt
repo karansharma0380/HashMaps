@@ -1,0 +1,105 @@
+leetcode 895
+Ques: Design a stack-like data structure to push elements to the stack and pop the most frequent element from the stack.
+
+Implement the FreqStack class:
+
+FreqStack() constructs an empty frequency stack.
+void push(int val) pushes an integer val onto the top of the stack.
+int pop() removes and returns the most frequent element in the stack.
+	If there is a tie for the most frequent element, the element closest to the stack's top is removed and 	returned.
+
+Example 1:
+Input
+["FreqStack", "push", "push", "push", "push", "push", "push", "pop", "pop", "pop", "pop"]
+[[], [5], [7], [5], [7], [4], [5], [], [], [], []]
+Output
+[null, null, null, null, null, null, null, 5, 7, 5, 4]
+
+Explanation
+FreqStack freqStack = new FreqStack();
+freqStack.push(5); // The stack is [5]
+freqStack.push(7); // The stack is [5,7]
+freqStack.push(5); // The stack is [5,7,5]
+freqStack.push(7); // The stack is [5,7,5,7]
+freqStack.push(4); // The stack is [5,7,5,7,4]
+freqStack.push(5); // The stack is [5,7,5,7,4,5]
+freqStack.pop();   // return 5, as 5 is the most frequent. The stack becomes [5,7,5,7,4].
+freqStack.pop();   // return 7, as 5 and 7 is the most frequent, but 7 is closest to the top. The stack becomes [5,7,5,4].
+freqStack.pop();   // return 5, as 5 is the most frequent. The stack becomes [5,7,4].
+freqStack.pop();   // return 4, as 4, 5 and 7 is the most frequent, but 4 is closest to the top. The stack becomes [5,7].
+
+Soln: 
+
+
+So we have to implement a stack where push operation is normal, change is only in the pop operation.
+
+push(val)-> add
+pop()-> return the max freq number. 
+
+
+stack ->        18
+		17
+		16
+		15
+		15
+		10
+		10
+		10
+
+now if we do pop on this then it will return 10, coz it has the maximum frequency. 
+again if we do pop then, it will return 15 coz both 10 and 15 have freq 2 but 15 is more closer to the top.
+
+See the image for the idea
+
+
+
+class FreqStack {
+
+    HashMap<Integer,LinkedList<Integer>> st;
+    HashMap<Integer, Integer> fmap;
+    int maxfreq;
+    
+    public FreqStack() {
+        st=new HashMap<>();
+        fmap=new HashMap<>();
+        maxfreq = 0;
+    }
+    
+    public void push(int val) {
+//         fmap.put(val,fmap.getOrDefault(0)+1); //Advanced hai  
+//         int stackNum = fmap.get(val);
+        //Easy understanding wala below hai
+        int cfreq = fmap.getOrDefault(val,0);
+        cfreq++;
+        fmap.put(val,cfreq);
+        
+        //Now put in the second hashMap
+        if(st.containsKey(cfreq)==false){
+            st.put(cfreq,new LinkedList<Integer>());
+        }
+        
+        st.get(cfreq).addFirst(val);
+        maxfreq = Math.max(cfreq, maxfreq);
+        
+    }
+    
+    public int pop() {
+        int ans = st.get(maxfreq).removeFirst(); //removed from the stack 2nd hashmap
+        
+        int cfreq = fmap.get(ans); //reference to the current freq of the popped number and do -1 to it.
+        cfreq--;
+        fmap.put(ans,cfreq);
+        
+        if(st.get(maxfreq).size()==0){ //We have to change the maxfreq if the stack is empty. 
+            maxfreq--;
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.push(val);
+ * int param_2 = obj.pop();
+ */

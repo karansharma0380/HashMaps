@@ -1,0 +1,89 @@
+leetcode 914
+Ques: You are given an integer array deck where deck[i] represents the number written on the ith card.
+
+Partition the cards into one or more groups such that:
+
+Each group has exactly x cards where x > 1, and
+All the cards in one group have the same integer written on them.
+
+
+Return true if such partition is possible, or false otherwise.
+
+Example 1:
+Input: deck = [1,2,3,4,4,3,2,1]
+Output: true
+Explanation: Possible partition [1,1],[2,2],[3,3],[4,4].
+
+Example 2:
+Input: deck = [1,1,1,2,2,2,3,3]
+Output: false
+Explanation: No possible partition.
+
+Soln: 
+
+
+Suppose we have deck = [2,2,2,3,3,3,3,4,4,4]
+
+we will create a hashmap for frequency
+ 
+    2 - 4
+    3 - 8
+    6 - 12
+
+now what should be the size of the partition satisfying our conditions for the partition.
+can we take smallest freq as the size?
+
+2222 | 3333 | 3333 | 6666 | 6666 | 6666
+
+Looks good but it will fail here.
+
+ 	2 - 4
+	3 - 6
+
+2222 | 3333 | 33??  => Here we are not able to get the partition with partition size as smallest frequency
+
+but if the partition would have been 2 then
+
+22 | 22 | 33 | 33 | 33   the partition is possible but with partition size 2.
+
+But how will be figure this out? This is gcd i.e. the num which can divide all the numbers in frequency. 
+
+We will calculate the gcd of all the frequencies and it has to be gcd>1 coz gcd = 1 means group size is 1. 
+
+
+
+class Solution {
+    public boolean hasGroupsSizeX(int[] deck) {
+        HashMap<Integer, Integer>  map = new HashMap<>();
+        
+        for(int i=0;i<deck.length;i++){
+            map.put(deck[i],map.getOrDefault(deck[i],0)+1);
+        }
+        
+        int ans=0;
+        
+        for(int key:map.keySet()){  //see at last
+            ans = gcd(ans,map.get(key));
+        }
+        
+        if(ans>=2){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public int gcd(int a, int b){
+	if(b==0){
+	    return a;
+	}
+	return gcd(b,a%b);
+}
+}
+	   ans =0
+		4  gcd(0,4) -> 4
+		6  gcd(4,6) -> 2
+		8  gcd(2,8) -> 2
+		12 gcd(2,12) -> 2  This is what is happening in the loop. 
+
